@@ -1,6 +1,7 @@
 package com.example.demo.exception;
 
 
+import com.example.demo.dto.request.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,15 +11,53 @@ import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExeptionHandle {
-    @ExceptionHandler (value = RuntimeException.class)
-    ResponseEntity<String> hadlingRunTimeException(RuntimeException exception)
+    @ExceptionHandler (value = Exception.class)
+    ResponseEntity<ApiResponse> handlingRunTimeException(RuntimeException exception)
     {
-        return ResponseEntity.badRequest().body(exception.getMessage());
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+        apiResponse.setMessage(ErrorCode.USER_EXISTED.getMessage());
+
+
+        return ResponseEntity.badRequest().body(apiResponse);
+    }
+
+    @ExceptionHandler (value = AppException.class)
+    ResponseEntity<ApiResponse> handlingRunTimeException(AppException exception)
+    {
+        ErrorCode errorCode = exception.getErrorCode();
+
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
+
+
+        return ResponseEntity.badRequest().body(apiResponse);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    ResponseEntity<String> handlingValidation(MethodArgumentNotValidException exception)
+    ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException exception)
     {
-        return ResponseEntity.badRequest().body(Objects.requireNonNull(exception.getFieldError()).getDefaultMessage());
+        String enumkey=exception.getFieldError().getDefaultMessage();
+
+
+        ErrorCode errorCode = ErrorCode.KEY_INVALID;
+        errorCode = ErrorCode.valueOf(enumkey);
+
+     try{
+         errorCode = ErrorCode.valueOf(enumkey);
+     }
+     catch (IllegalArgumentException e){
+
+     }
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
+
+
+
+        return ResponseEntity.badRequest().body(Objects.requireNonNull(apiResponse));
     }
 }

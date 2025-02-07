@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.request.ApiResponse;
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
 import com.example.demo.entity.User;
@@ -19,11 +20,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    //dữ liệu gửi đi từ fe (json) -> cần chuyển qua object để xử lý
+//    //dữ liệu gửi đi từ fe (json) -> cần chuyển qua object để xử lý
+//    @PostMapping
+//    User createUser(@RequestBody @Valid UserCreationRequest request)
+//    {
+//        return userService.createUser(request); //từ obeject tự chuyển về json theo cơ chế của spring boot
+//    }
+
+
     @PostMapping
-    User createUser(@RequestBody @Valid UserCreationRequest request)
+    ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request)
     {
-        return userService.createUser(request); //từ obeject tự chuyển về json theo cơ chế của spring boot
+        ApiResponse<User> apiRespone = new ApiResponse<>();
+        apiRespone.setResult(userService.createUser(request));
+
+        return apiRespone;
     }
 
     @GetMapping

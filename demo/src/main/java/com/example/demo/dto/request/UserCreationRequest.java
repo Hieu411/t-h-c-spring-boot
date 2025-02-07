@@ -6,10 +6,10 @@ import java.time.LocalDate;
 
 public class UserCreationRequest {
 
-    @Size (min =3, message = "username phai tren 3 ki tu ")
+    @Size (min =3, message = "USERNAME_INVALID")
     private String username;
 
-    @Size(min = 8, message = "password phai toi thieu 8 ki tuy")
+    @Size(min = 8, message = "PASSWORD_INVALID")
     private String password;
 
     private String FirstName;
