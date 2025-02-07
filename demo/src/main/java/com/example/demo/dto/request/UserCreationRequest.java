@@ -1,11 +1,17 @@
 package com.example.demo.dto.request;
 
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 public class UserCreationRequest {
 
+    @Size (min =3, message = "username phai tren 3 ki tu ")
     private String username;
+
+    @Size(min = 8, message = "password phai toi thieu 8 ki tuy")
     private String password;
+
     private String FirstName;
     private String LastName;
     private LocalDate dob;
