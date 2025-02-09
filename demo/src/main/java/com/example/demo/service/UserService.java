@@ -3,61 +3,62 @@ package com.example.demo.service;
 
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
+import com.example.demo.dto.respone.UserRespone;
 import com.example.demo.entity.User;
 import com.example.demo.exception.AppException;
 import com.example.demo.exception.ErrorCode;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.repository.UserRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
 
-    public User createUser(UserCreationRequest request)
-    {
-        User user = new User();
+    UserRepository userRepository;
 
-        if(userRepository.existsByUsername(request.getUsername()))
-        {
+
+    UserMapper userMapper;
+
+
+    public User createUser(UserCreationRequest request) {
+
+        if (userRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-        user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setDob(request.getDob());
+
+        User user = userMapper.toUser(request);
+
 
         return userRepository.save(user);
 
     }
 
-    public User updateUser(String userId, UserUpdateRequest request)
-    {
-        User user = getUser(userId);
+    public UserRespone updateUser(String userId, UserUpdateRequest request) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        userMapper.updateUser(user, request);
 
-        user.setPassword(request.getPassword());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setDob(request.getDob());
 
-        return userRepository.save(user);
+        return userMapper.toUserRespone(userRepository.save(user));
 
     }
 
-    public void deleteUser(String userID)
-    {
+    public void deleteUser(String userID) {
         userRepository.deleteById(userID);
     }
-    public List<User> getUsers()
-    {
+
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
-    public User getUser(String id){
-        return userRepository.findById(id).orElseThrow(()->new RuntimeException("User nof found"));
+    public UserRespone getUser(String id) {
+        return userMapper.toUserRespone(userRepository.findById(id).orElseThrow(() -> new RuntimeException("User nof found")));
     }
 }
