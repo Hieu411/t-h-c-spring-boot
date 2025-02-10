@@ -9,6 +9,7 @@ public enum ErrorCode {
     PASSWORD_INVALID(1004,"password phai tu 8 ki tu tro len"),
 
     USER_NOT_EXISTED (1005, "User khong ton tai"),
+    UNAUTHENTICATED(1006, "Unauthenticated")
 
             ;
 
