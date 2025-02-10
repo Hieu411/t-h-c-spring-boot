@@ -2,14 +2,14 @@ package com.example.demo.mapper;
 
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
-import com.example.demo.dto.respone.UserRespone;
+import com.example.demo.dto.response.UserResponse;
 import com.example.demo.entity.User;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-09T15:50:09+0700",
+    date = "2025-02-09T17:39:49+0700",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.5 (Oracle Corporation)"
 )
 @Component
@@ -33,21 +33,21 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public UserRespone toUserRespone(User user) {
+    public UserResponse toUserResponse(User user) {
         if ( user == null ) {
             return null;
         }
 
-        UserRespone.UserResponeBuilder userRespone = UserRespone.builder();
+        UserResponse.UserResponseBuilder userResponse = UserResponse.builder();
 
-        userRespone.id( user.getId() );
-        userRespone.username( user.getUsername() );
-        userRespone.password( user.getPassword() );
-        userRespone.firstName( user.getFirstName() );
-        userRespone.lastName( user.getLastName() );
-        userRespone.dob( user.getDob() );
+        userResponse.id( user.getId() );
+        userResponse.username( user.getUsername() );
+        userResponse.password( user.getPassword() );
+        userResponse.firstName( user.getFirstName() );
+        userResponse.lastName( user.getLastName() );
+        userResponse.dob( user.getDob() );
 
-        return userRespone.build();
+        return userResponse.build();
     }
 
     @Override

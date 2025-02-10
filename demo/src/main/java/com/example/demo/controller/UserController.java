@@ -3,14 +3,13 @@ package com.example.demo.controller;
 import com.example.demo.dto.request.ApiResponse;
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
-import com.example.demo.dto.respone.UserRespone;
+import com.example.demo.dto.response.UserResponse;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,12 +48,12 @@ public class UserController {
 
     @GetMapping("/{userId}")
 //truyền vào userId ở fe (ví dụ localhost:8080/user/123
-    UserRespone getUser(@PathVariable("userId") String userId) { // tự lấy userId (123) kia và gán vào userId (string)
+    UserResponse getUser(@PathVariable("userId") String userId) { // tự lấy userId (123) kia và gán vào userId (string)
         return userService.getUser(userId); //truyền userId vào method đeer xử lý và tự chuyển thành Json để trả cho client
     }
 
     @PutMapping("/{userId}")
-    UserRespone updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
+    UserResponse updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
         return userService.updateUser(userId, request);
     }
 
